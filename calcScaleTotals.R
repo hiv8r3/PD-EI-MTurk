@@ -124,7 +124,7 @@ hist(UCLAdat$UCLA_total)
 
 # Satisfaction with Life scale
 # 5 items, on scale of 1 (strongly disagree) to 7 (strongly agree)
-# Sum up scores
+# Average scores
 # Higher score is more satisfied with life
 
 SWLSdat = select(noBS, one_of(SWLS)) %>%
@@ -310,37 +310,71 @@ for (i in unique(WellRdat$Subject)) {
 }
 
 # creates total wellbeing score by averaging all 21 items
-WellRdat = mutate(WellRdat, WellR_total = ("Rau_1" + "Rem_2" + "Rsa_6" + "Rau_7" +
-                                           "Rem_8" + "Rsa_12" + "Rau_13.rev" + "Rem_14.rev" +
-                                           "Rsa_18.rev" + "Rau_19.rev" +
-                                           "Rem_20" + "Rsa_24" + "Rau_25" + "Rem_26.rev" +
-                                           "Rsa_30.rev" + "Rau_31.rev" +
-                                           "Rem_32.rev" + "Rsa_36.rev" +
-                                           "Rau_37" + "Rem_38" + "Rsa_42")/21)
+WellRdat = mutate(WellRdat, WellR_total = (Rau_1 + Rem_2 + Rsa_6 + Rau_7 +
+                                           Rem_8 + Rsa_12 + Rau_13.rev + Rem_14.rev +
+                                           Rsa_18.rev + Rau_19.rev +
+                                           Rem_20 + Rsa_24 + Rau_25 + Rem_26.rev +
+                                           Rsa_30.rev + Rau_31.rev +
+                                           Rem_32.rev + Rsa_36.rev +
+                                           Rau_37 + Rem_38 + Rsa_42)/21)
 
 # creates autonomy wellbeing score by averaging 7 items
-WellRdat = mutate(WellRdat, WellR_auto = ("Rau_1" +
-                                             "Rau_7" +
-                                             "Rau_13.rev" +
-                                             "Rau_19.rev" +
-                                             "Rau_25" +
-                                             "Rau_31.rev" +
-                                             "Rau_37")/7)
+WellRdat = mutate(WellRdat, WellR_auto = (Rau_1 +
+                                             Rau_7 +
+                                             Rau_13.rev +
+                                             Rau_19.rev +
+                                             Rau_25 +
+                                             Rau_31.rev +
+                                             Rau_37)/7)
 
 # creates environmental mastery wellbeing score by averaging 7 items
-WellRdat = mutate(WellRdat, WellR_envir = ("Rem_2" +
-                                             "Rem_8" +
-                                             "Rem_14.rev" +
-                                             "Rem_20" +
-                                             "Rem_26.rev" +
-                                             "Rem_32.rev" +
-                                             "Rem_38")/7)
+WellRdat = mutate(WellRdat, WellR_envir = (Rem_2 +
+                                             Rem_8 +
+                                             Rem_14.rev +
+                                             Rem_20 +
+                                             Rem_26.rev +
+                                             Rem_32.rev +
+                                             Rem_38)/7)
 
 # creates self-acceptance wellbeing score by averaging 7 items
-WellRdat = mutate(WellRdat, WellR_accept = ("Rsa_6" +
-                                             "Rsa_12" +
-                                             "Rsa_18.rev" +
-                                             "Rsa_24" +
-                                             "Rsa_30.rev" +
-                                             "Rsa_36.rev" +
-                                             "Rsa_42")/7)
+WellRdat = mutate(WellRdat, WellR_accept = (Rsa_6 +
+                                             Rsa_12 +
+                                             Rsa_18.rev +
+                                             Rsa_24 +
+                                             Rsa_30.rev +
+                                             Rsa_36.rev +
+                                             Rsa_42)/7)
+
+# all look pretty normally distributed
+hist(WellRdat$WellR_total, breaks = 30)
+hist(WellRdat$WellR_auto, breaks = 30)
+hist(WellRdat$WellR_envir, breaks = 30)
+hist(WellRdat$WellR_accept, breaks = 30)
+
+
+
+##########################################################################################
+####################### add all calculated scores to original data frame #################
+####################### (doesn't include bad subjects) ###################################
+##########################################################################################
+
+datWithTotScores = cbind(noBS, select(UCLAdat, UCLA_total)) %>%
+  cbind(select(SWLSdat, SWLS_total)) %>%
+  cbind(select(SEdat, SE_total)) %>%
+  cbind(select(SEdat, SE_perf)) %>%
+  cbind(select(SEdat, SE_social)) %>%
+  cbind(select(SEdat, SE_appear)) %>%
+  cbind(select(Mooddat, Mood_total)) %>%
+  cbind(select(PDdat, PD_general)) %>%
+  cbind(select(PDRdat, PD_race)) %>%
+  cbind(select(EIdat, EI_total)) %>%
+  cbind(select(WellBdat, WellB_total)) %>%
+  cbind(select(WellBdat, WellB_PA)) %>%
+  cbind(select(WellBdat, WellB_NA)) %>%
+  cbind(select(WellRdat, WellR_total)) %>%
+  cbind(select(WellRdat, WellR_auto)) %>%
+  cbind(select(WellRdat, WellR_envir)) %>%
+  cbind(select(WellRdat, WellR_accept))
+
+write.table(datWithTotScores, file = "datWithCalcScores.txt", sep = "\t", row.names = F)
+
