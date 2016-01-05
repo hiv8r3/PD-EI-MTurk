@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1452020213972.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8660D04F",
+    "lastKnownWriteTime" : 3774690728882470912,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "WellB",
+        "contentUrl" : "content?title=WellB&file=8eb47ef2cefa4482b878d393cad7073b.htm",
+        "displayedObservations" : 10,
+        "displayedVariables" : 1,
+        "totalObservations" : 10,
+        "variables" : 1
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

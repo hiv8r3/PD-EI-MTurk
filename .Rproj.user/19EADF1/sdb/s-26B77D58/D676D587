@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1452019416973.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D676D587",
+    "lastKnownWriteTime" : 0,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "EIdat",
+        "contentUrl" : "content?title=EIdat&file=a7108bb756654cf08e06097170297b9e.htm",
+        "displayedObservations" : 545,
+        "displayedVariables" : 12,
+        "totalObservations" : 545,
+        "variables" : 11
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
