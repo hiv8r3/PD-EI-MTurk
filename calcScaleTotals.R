@@ -72,7 +72,7 @@ missing = data.frame(Subject = NULL, PercMissing = NULL)
 for (i in 1:nrow(notComplete)) {
   temp = notComplete[notComplete$Subject == i,]
   k = sum(is.na(temp))/117
-  missing = rbind(badSubs, data.frame(Subject = i, PercMissing = k))
+  missing = rbind(missing, data.frame(Subject = i, PercMissing = k))
   }
 
 hist(missing$PercMissing, breaks = 30)
@@ -81,7 +81,7 @@ nrow(missing[missing$PercMissing > .6,])   # 20 subjects missing more than 60%
 nrow(missing[missing$PercMissing > .5,])   # 24 subjects missing more than 50%
 nrow(missing[missing$PercMissing > .4,])   # 28 subjects missing more than 40%
 
-badSubs = missing[missing$PercMissing > .5,]
+badSubs = missing[missing$PercMissing > .4,]
 
 
 ######################################################################################
@@ -358,7 +358,7 @@ hist(WellRdat$WellR_accept, breaks = 30)
 ####################### (doesn't include bad subjects) ###################################
 ##########################################################################################
 
-datWithTotScores = cbind(noBS, select(UCLAdat, UCLA_total)) %>%
+datWithTotScores = left_join(noBS, UCLAdat[,21:31], by = "Subject") %>%
   cbind(select(SWLSdat, SWLS_total)) %>%
   cbind(select(SEdat, SE_total)) %>%
   cbind(select(SEdat, SE_perf)) %>%
