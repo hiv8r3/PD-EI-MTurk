@@ -124,6 +124,18 @@ UCLAdat = mutate(UCLAdat, UCLA_total =
 # histogram shows scores normally distributed
 hist(UCLAdat$UCLA_total)
 
+# create subscale just for interpersonal loneliness items
+UCLAdat = mutate(UCLAdat, UCLA_sub = (UCLA_1_2.rev + UCLA_1_3.rev + UCLA_1_4.rev +
+                                        UCLA_2_1.rev + UCLA_2_9 + UCLA_2_10)/6)
+
+# histogram shows scores normally distributed
+hist(UCLAdat$UCLA_sub, breaks = 30)
+
+require(psych)
+# cronbach's alpha for 6-item subscale: .89
+alpha(UCLAdat[,c(22,23,24,27, 19, 20)])
+# cronbach's alpha for whole UCLA scale: .93
+alpha(UCLAdat[,c(22:32,1, 5, 6, 9, 10, 15, 16, 19, 20)])
 
 # Satisfaction with Life scale
 # 5 items, on scale of 1 (strongly disagree) to 7 (strongly agree)
@@ -361,7 +373,7 @@ hist(WellRdat$WellR_accept, breaks = 30)
 ####################### (doesn't include bad subjects) ###################################
 ##########################################################################################
 
-datWithTotScores = left_join(noBS, UCLAdat[,21:33], by = "Subject") %>%
+datWithTotScores = left_join(noBS, UCLAdat[,21:34], by = "Subject") %>%
   cbind(select(SWLSdat, SWLS_total)) %>%
   cbind(select(SEdat, SE_total)) %>%
   cbind(select(SEdat, SE_perf)) %>%

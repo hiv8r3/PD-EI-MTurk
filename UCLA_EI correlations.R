@@ -13,8 +13,14 @@ all = read.delim("noBS_allData.txt")
 cor(nonWhite$UCLA_total, nonWhite$EI_total)
 # correlation in nonWhite sample is .54
 
+cor(nonWhite$UCLA_sub, nonWhite$EI_total)
+# correlation with UCLA subscale (interpersonal loneliness items) is .42
+
 cor(White$UCLA_total[!(is.na(White$UCLA_total))], White$EI_total[!(is.na(White$UCLA_total))])
 # correlation in White sample is .62
+
+cor(White$UCLA_sub[!(is.na(White$UCLA_sub))], White$EI_total[!(is.na(White$UCLA_sub))])
+# correlation with UCLA subscale is .49
 
 datNW = select(nonWhite, starts_with("UCLA")) %>%
   select(-UCLA_1_2,
@@ -53,7 +59,11 @@ datW =  datW[!(is.na(datW$UCLA_1_7)),]
 correlW = cor(datW)
 sort(correlW[,21])
 
+sub = datW[,c(10:12,15,8:9)]
 
+sink("UCLA subscale interitem correlations.txt")
+cor(sub)
+sink()
 ################ Factor analysis #######################
 
 # for nonWhite sample
@@ -70,6 +80,7 @@ datNW2 = select(nonWhite, starts_with("UCLA")) %>%
          -UCLA_2_4,
          -UCLA_2_7,
          -UCLA_2_8,
+         -UCLA_sub,
          -UCLA_total,
          -EIS_1,
          -EIS_2,
@@ -97,6 +108,7 @@ datW2 = select(White, starts_with("UCLA")) %>%
          -UCLA_2_4,
          -UCLA_2_7,
          -UCLA_2_8,
+         -UCLA_sub,
          -UCLA_total,
          -EIS_1,
          -EIS_2,
@@ -109,3 +121,12 @@ datW2 =  datW2[!(is.na(datW2$UCLA_1_7)),]
 # with oblique (promax) rotation 
 fitW <- factanal(datW2, 2, rotation="promax")
 print(fitW, digits=2, cutoff=.3, sort=TRUE)
+
+# EFA just of UCLA items- nonWhite sample
+fitNW_UCLA <- factanal(datNW[,1:20], 2, rotation="promax")
+print(fitNW_UCLA, digits=2, cutoff=.3, sort=TRUE)
+
+
+# EFA just of UCLA items- White sample
+fitW_UCLA <- factanal(datW[,1:20], 2, rotation="promax")
+print(fitW_UCLA, digits=2, cutoff=.3, sort=TRUE)
