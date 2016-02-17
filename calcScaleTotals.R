@@ -367,6 +367,7 @@ datWithTotScores = left_join(noBS, UCLAdat[,21:31], by = "Subject") %>%
   cbind(select(Mooddat, Mood_total)) %>%
   cbind(select(PDdat, PD_general)) %>%
   cbind(select(PDRdat, PD_race)) %>%
+  cbind(EIdat[,8:11]) %>%
   cbind(select(EIdat, EI_total)) %>%
   cbind(select(WellBdat, WellB_total)) %>%
   cbind(select(WellBdat, WellB_PA)) %>%

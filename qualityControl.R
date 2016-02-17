@@ -121,7 +121,7 @@ subs9 = c(subs9, dat$Subject[dat$T14_3 > (m9+3*s9)])
 totalTime = UCLAtime + SWLStime + SEtime + Moodtime + PDtime + PDRtime + EIStime + WellBtime + WellRtime
 hist(totalTime, breaks = 30)
 
-badsubs1 = unique(c(subs1, subs2, subs3, subs4, subs5, subs6, subs7, subs8, subs9)) # 116 subjects
+badsubs1 = unique(c(subs1, subs2, subs3, subs4, subs5, subs6, subs7, subs8, subs9)) # 115 subjects
 
 
 #############################################################################################
@@ -153,4 +153,20 @@ sum(a + b + c == 3, na.rm = T) # 1 subject
 
 subs13 = dat$Subject[(dat$Interr + dat$Distr + dat$Privacy) >= 5] # 3 items + 2 yeses 
 
-badsubs2 = unique(c(badsubs1, subs13)) # 117 subjects (only added 1 on top of ones whose time was unacceptable)
+badsubs2 = unique(c(badsubs1, subs13)) # 116 subjects (only added 1 on top of ones whose time was unacceptable)
+
+nonWhite = read.delim("nonWhiteSubsWithCalcScores.txt")
+White = read.delim("WhiteSubsWithCalcScores.txt")
+
+sum(badsubs2 %in% dat$Subject)
+noBSall = dat[!(dat$Subject %in% badsubs2),]
+
+noBSwhite = White[!(White$Subject %in% badsubs2),] # takes out 31 white subjects
+
+noBSnonwhite = nonWhite[!(nonWhite$Subject %in% badsubs2),] # takes out 82 nonwhite subjects
+
+
+write.table(noBSall, "noBS_allData.txt", sep = "\t", row.names = F)
+write.table(noBSwhite, "noBS_whiteData.txt", sep = "\t", row.names = F)
+write.table(noBSnonwhite, "noBS_nonwhiteData.txt", sep = "\t", row.names = F)
+
