@@ -91,32 +91,35 @@ badSubs = missing[missing$PercMissing > .4,]
 noBS = dat[!(dat$Subject %in% badSubs$Subject),]
 
 # UCLA Loneliness scale
-# 20 items, on scale of 1 (never) to 4 (always)
-# Reverse scored: 1, 5, 6, 9, 10, 15, 16, 19, 20
+# 20 items, on scale of 1 (always) to 4 (never) # mistake, should be 1 (never) to 4 (always)
+# Reverse scored: 1, 5, 6, 9, 10, 15, 16, 19, 20 # would be if normal. 
+# Instead, rev score: 2, 3, 4, 7, 8, 11, 12, 13, 14, 17, 18 
 # Higher score is more lonely
 
 UCLAdat = select(noBS, one_of(UCLA)) %>%
   cbind(select(noBS, Subject))
 
 for (i in unique(UCLAdat$Subject)) {
-  UCLAdat$UCLA_1_1.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_1[UCLAdat$Subject == i]
-  UCLAdat$UCLA_1_5.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_5[UCLAdat$Subject == i]
-  UCLAdat$UCLA_1_6.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_6[UCLAdat$Subject == i]
-  UCLAdat$UCLA_1_9.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_9[UCLAdat$Subject == i]
-  UCLAdat$UCLA_1_10.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_10[UCLAdat$Subject == i]
-  UCLAdat$UCLA_2_5.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_5[UCLAdat$Subject == i]
-  UCLAdat$UCLA_2_6.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_6[UCLAdat$Subject == i]
-  UCLAdat$UCLA_2_9.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_9[UCLAdat$Subject == i]
-  UCLAdat$UCLA_2_10.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_10[UCLAdat$Subject == i]
+  UCLAdat$UCLA_1_2.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_2[UCLAdat$Subject == i]
+  UCLAdat$UCLA_1_3.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_3[UCLAdat$Subject == i]
+  UCLAdat$UCLA_1_4.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_4[UCLAdat$Subject == i]
+  UCLAdat$UCLA_1_7.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_7[UCLAdat$Subject == i]
+  UCLAdat$UCLA_1_8.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_1_8[UCLAdat$Subject == i]
+  UCLAdat$UCLA_2_1.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_1[UCLAdat$Subject == i]
+  UCLAdat$UCLA_2_2.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_2[UCLAdat$Subject == i]
+  UCLAdat$UCLA_2_3.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_3[UCLAdat$Subject == i]
+  UCLAdat$UCLA_2_4.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_4[UCLAdat$Subject == i]
+  UCLAdat$UCLA_2_7.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_7[UCLAdat$Subject == i]
+  UCLAdat$UCLA_2_8.rev[UCLAdat$Subject == i] = 5 - UCLAdat$UCLA_2_8[UCLAdat$Subject == i]
 }
 
 # creates UCLA score by averaging across all 20 items (including reversed scored items)
 UCLAdat = mutate(UCLAdat, UCLA_total = 
-                   (UCLA_1_1.rev + UCLA_1_2 + UCLA_1_3 + UCLA_1_4 +
-                      UCLA_1_5.rev + UCLA_1_6.rev + UCLA_1_7 + UCLA_1_8 +
-                      UCLA_1_9.rev + UCLA_1_10.rev + UCLA_2_1 + UCLA_2_2 +
-                      UCLA_2_3 + UCLA_2_4 + UCLA_2_5.rev + UCLA_2_6.rev +
-                      UCLA_2_7 + UCLA_2_8 + UCLA_2_9.rev + UCLA_2_10.rev)/20)
+                   (UCLA_1_1 + UCLA_1_2.rev + UCLA_1_3.rev + UCLA_1_4.rev +
+                      UCLA_1_5 + UCLA_1_6 + UCLA_1_7.rev + UCLA_1_8.rev +
+                      UCLA_1_9 + UCLA_1_10 + UCLA_2_1.rev + UCLA_2_2.rev +
+                      UCLA_2_3.rev + UCLA_2_4.rev + UCLA_2_5 + UCLA_2_6 +
+                      UCLA_2_7.rev + UCLA_2_8.rev + UCLA_2_9 + UCLA_2_10)/20)
 
 # histogram shows scores normally distributed
 hist(UCLAdat$UCLA_total)
@@ -358,7 +361,7 @@ hist(WellRdat$WellR_accept, breaks = 30)
 ####################### (doesn't include bad subjects) ###################################
 ##########################################################################################
 
-datWithTotScores = left_join(noBS, UCLAdat[,21:31], by = "Subject") %>%
+datWithTotScores = left_join(noBS, UCLAdat[,21:33], by = "Subject") %>%
   cbind(select(SWLSdat, SWLS_total)) %>%
   cbind(select(SEdat, SE_total)) %>%
   cbind(select(SEdat, SE_perf)) %>%
